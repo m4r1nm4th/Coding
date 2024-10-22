@@ -4,30 +4,29 @@
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		<div class="container">
+			<h3 id="demo">Dies ist eine App zur Auslosung beim Wichteln.</h3>
 
-		<h3 id="demo">
-			Dies ist eine App zur Auslosung beim Wichteln.
-		</h3>
+			<form>
+				<label for="anzahlGeschenke">Anzahl der Geschenke:</label>
+				<input type="text" id="anzahlGeschenke">
+				<input type="button" value="Submit" onclick="myFunction()">
+			</form>
 
-		<form>
-			<label for="anzahlGeschenke">Anzahl der Geschenke:</label>
-	    	<input type="text" id="anzahlGeschenke">
-			<input type="button" value="Submit" onclick="myFunction()">
-		</form>
+			<div id="displayGeschenke"></div>
 
-		<div id="displayGeschenke"></div>
+			<form>
+				<label for="spieler">Name der SpielerIn:</label>
+				<input type="text" id="spieler">
+				<input type="button" value="Submit" onclick="myFunction2()">
+			</form>
 
-		<form>
-			<label for="spieler">Name der SpielerIn:</label>
-			<input type="text" id="spieler">
-			<input type="button" value="Submit" onclick="myFunction2()">
-		</form>
+			<div id="displaySpieler"></div>
 
-		<div id="displaySpieler"></div>
+			<button id="shuffle" onclick="myFunction3()">Auslosen!</button>
 
-		<button id="shuffle" onclick="myFunction3()">Auslosen!</button>
-
-		<div id="ergebnis"></div>
+			<div id="ergebnis"></div>
+		</div>
 
 		<script src="myScript.js"></script>
 	</body>
