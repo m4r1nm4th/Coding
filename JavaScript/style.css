@@ -44,7 +44,7 @@ form {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     width: 100%;                /* Take full width of the container */
     display: flex;
     flex-direction: column;
@@ -108,7 +108,8 @@ button {
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
+    margin-top:  0px;
+    margin-bottom: 50px;
     width: 100%;
     min-height: 50px;
     color: #333;
@@ -120,3 +121,60 @@ div {
     text-align: center;
 }
 
+
+}
+h1,
+h2 {
+   text-align: center;
+}
+h1 {
+   font-size: 2em;
+}
+h3 {
+   margin-top: 20px;
+}
+textarea {
+   background: #fff !important;
+   width: 100%;
+   margin: 0 20px 0 0;
+   height: 200px;
+   border-radius: 5px;
+   border-color: #555;
+   font-family: "Lucida Console", monospace;
+   font-size: 1em;
+   resize: none;
+}
+textarea:hover {
+   background: #fff !important;
+}
+textarea:focus {
+   outline: none;
+   background: #fff !important;
+}
+.grid {
+   width: 50%;
+   float: left;
+   overflow: hidden;
+   box-sizing: border-box;
+   padding: 0 30px 0 0;
+}
+.edit {
+   background: #fff !important;
+   padding: 5px;
+}
+.output {
+   background: #fff;
+   border-left: 1px solid #f3f3f3;
+   overflow: hidden;
+   padding: 0 20px;
+   margin: 20px 0;
+}
+.output iframe {
+   border: none;
+   width: 100%;
+   height: 100%;
+   overflow: hidden;
+}
+.output iframe::-webkit-scrollbar {
+   display: none;
+}
