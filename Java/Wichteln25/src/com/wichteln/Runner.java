@@ -1,4 +1,6 @@
+package com.wichteln;
 import java.util.List;
+
 
 public class Runner {
 
@@ -8,17 +10,13 @@ public class Runner {
             "Brigitte",
             "Norbert",
             "Lotte",
-            "Felix"
-    );
-    
+            "Felix");
+
     public static void main(String[] args) {
         run();
     }
 
     private static void run() {
-        Matching matching = new Matching(SPIELER);
-        matching.generierePaarungen();
-        Persist persist = new Persist(matching);
-        persist.save();
+        UserInteraction ui = new UserInteraction();
     }
 }

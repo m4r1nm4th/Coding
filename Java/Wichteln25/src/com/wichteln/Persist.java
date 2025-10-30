@@ -1,7 +1,7 @@
+package com.wichteln;
 import java.io.File;
-import java.security.Timestamp;
-import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Persist {
 
@@ -17,10 +17,11 @@ public class Persist {
         new File(path).mkdirs();
         var paarungen = matching.getPaarungen();
         var spielerList = matching.getSpieler();
-        for(int i = 0; i < matching.getAnzahlSpieler(); i++) {
+        for (int i = 0; i < matching.getAnzahlSpieler(); i++) {
             String spieler = spielerList.get(i);
-            String beschenkter = paarungen.get(spieler);
-            String content = "Spieler: " + spieler + "\nBeschenkter: " + beschenkter;
+            List<String> beschenkte = paarungen.get(spieler);
+            String content = "Spieler:in: " + spieler + "\nBeschenkte: "
+                    + beschenkte.stream().reduce("", (a, b) -> a + b + " ");
             try {
                 java.nio.file.Files.writeString(java.nio.file.Paths.get(path + "/" + spieler + ".txt"), content);
             } catch (Exception e) {
