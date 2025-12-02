@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
@@ -22,9 +23,31 @@ public class Hand {
     }
 
     public boolean addCard(Integer card) {
-        this.hasFaulted = this.cards.contains(card);      
+        this.hasFaulted = this.cards.contains(card);
         this.cards.add(card);
         return this.hasFaulted;
     }
 
+    public int numberOfHandCards() {
+        return cards.size();
+    }
+
+    public List<Integer> getCards() {
+        return this.cards;
+    }
+
+    public void setCards(List<Integer> cards) {
+        this.cards = cards;
+    }
+
+    public void setHasFaulted(boolean hasFaulted) {
+        this.hasFaulted = hasFaulted;
+    }
+
+    public Hand clone() {
+        Hand hand = new Hand();
+        hand.setCards(new ArrayList<Integer>(this.cards));
+        hand.setHasFaulted(this.hasFaulted);
+        return hand;
+    }
 }
