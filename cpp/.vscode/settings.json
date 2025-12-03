@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "__config": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}

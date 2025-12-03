@@ -11,36 +11,61 @@ struct Gameparameter
     int initial_capital;
     int fee;
     int rounds;
+    int rich;
 } gamePara;
 
 struct MonteCarloSimulation
 {
     int size;
+    minstd_rand rng;
 } simPara;
 
-pcg32 rng(chrono::system_clock::now().time_since_epoch().count());
+int playLottery(int moneyBefore)
+{
+    int money = moneyBefore;
+    money -= gamePara.fee;
+    int pot = 1;
+    while (bernoulli_distribution(0.5)(simPara.rng) == 1)
+    {
+        pot *= 2;
+    }
+    money += pot;
+    return money;
+}
 
-bool runGame()
+bool runGameNRounds()
 {
     int money = gamePara.initial_capital;
     int round = 0;
     do
     {
         round++;
-        money -= gamePara.fee;
-        int numHeads = 0;
-        while (bernoulli_distribution(0.5)(rng) == 1)
-        {
-            numHeads += 1;
-        }
-        int win = 1;
-        for (int i = 0; i < numHeads; i++)
-        {
-            win *= 2;
-        }
-        money += win;
+        money = playLottery(money);
     } while (money >= gamePara.fee && round < gamePara.rounds);
     return money > gamePara.fee;
+}
+
+bool runGameUntilRich()
+{
+    int money = gamePara.initial_capital;
+    int rich = gamePara.rich;
+    do
+    {
+        money = playLottery(money);
+    } while (money >= gamePara.fee && money < rich);
+    return money >= rich;
+}
+
+bool runGame()
+{
+    if (gamePara.rounds == -1)
+    {
+        return runGameUntilRich();
+    }
+    else
+    {
+        return runGameNRounds();
+    }
 }
 
 float gameSim()
@@ -69,7 +94,7 @@ int main2()
 
 int main(int argc, char *argv[])
 {
-    if (argc < 5)
+    if (argc < 6)
     {
         return main2();
     }
@@ -79,6 +104,12 @@ int main(int argc, char *argv[])
         gamePara.initial_capital = stoi(argv[2]);
         gamePara.rounds = stoi(argv[3]);
         simPara.size = stoi(argv[4]);
+        gamePara.rich = stoi(argv[5]);
+
+        // simPara.rng = pcg32(chrono::system_clock::now().time_since_epoch().count());
+        // simPara.rng = myRBG(123);
+        minstd_rand rng(chrono::system_clock::now().time_since_epoch().count());
+        simPara.rng = rng;
 
         auto start = chrono::high_resolution_clock::now();
         cout << "Monte Carlo simulation of alive players: " << gameSim() * 100 << "%" << "\n";
