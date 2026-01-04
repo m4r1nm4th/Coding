@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <random>
 #include <execution>
+#include <chrono>
 #include "pcg-cpp-0.98/include/pcg_random.hpp"
 using namespace std;
 
@@ -14,10 +15,17 @@ struct Gameparameter
     int rich;
 } gamePara;
 
+enum Mode {
+    ROUNDBASED,
+    RICHCUTOFF,
+    LOSTMONEY
+};
+
 struct MonteCarloSimulation
 {
     int size;
     minstd_rand rng;
+    enum Mode mode;
 } simPara;
 
 int playLottery(int moneyBefore)
@@ -33,8 +41,7 @@ int playLottery(int moneyBefore)
     return money;
 }
 
-bool runGameNRounds()
-{
+int moneyAfterNRounds() {
     int money = gamePara.initial_capital;
     int round = 0;
     do
@@ -42,8 +49,14 @@ bool runGameNRounds()
         round++;
         money = playLottery(money);
     } while (money >= gamePara.fee && round < gamePara.rounds);
-    return money > gamePara.fee;
+    return money;
 }
+
+bool runGameNRounds()
+{
+    return moneyAfterNRounds() > gamePara.fee;
+}
+
 
 bool runGameUntilRich()
 {
@@ -56,15 +69,25 @@ bool runGameUntilRich()
     return money >= rich;
 }
 
+bool runGameCountLost() {
+    return moneyAfterNRounds() >= gamePara.initial_capital;
+}
+
 bool runGame()
 {
-    if (gamePara.rounds == -1)
-    {
-        return runGameUntilRich();
-    }
-    else
-    {
-        return runGameNRounds();
+    enum Mode m = simPara.mode;
+    switch(m) {
+        case 0:
+            return runGameNRounds();
+            break;
+        case 1:
+            return runGameUntilRich();
+            break;
+        case 2:
+            return runGameCountLost();
+            break;
+        default:
+            return runGameNRounds();
     }
 }
 
@@ -100,6 +123,9 @@ int main(int argc, char *argv[])
     }
     else
     {
+
+        simPara.mode = LOSTMONEY;
+
         gamePara.fee = stoi(argv[1]);
         gamePara.initial_capital = stoi(argv[2]);
         gamePara.rounds = stoi(argv[3]);
@@ -108,7 +134,7 @@ int main(int argc, char *argv[])
 
         // simPara.rng = pcg32(chrono::system_clock::now().time_since_epoch().count());
         // simPara.rng = myRBG(123);
-        minstd_rand rng(chrono::system_clock::now().time_since_epoch().count());
+        minstd_rand rng(std::chrono::system_clock::now().time_since_epoch().count());
         simPara.rng = rng;
 
         auto start = chrono::high_resolution_clock::now();
